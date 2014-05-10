@@ -1,0 +1,26 @@
+{
+  "name": "nodegrind",
+  "version": "0.0.0",
+  "description": "Profile nodejs applications with kcachegrind, either using the nodegrind wrapper or the more targeted profiling module.",
+  "main": "nodegrind.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/gwicke/nodegrind.git"
+  },
+  "keywords": [
+    "profiling",
+    "kcachegrind"
+  ],
+  "author": "Gabriel Wicke <gwicke@wikimedia.org>",
+  "license": "GPLv2",
+  "bugs": {
+    "url": "https://github.com/gwicke/nodegrind/issues"
+  },
+  "dependencies": {
+    "v8-profiler": "^4.0.1",
+    "chrome2calltree": "0.0.1"
+  }
+}
