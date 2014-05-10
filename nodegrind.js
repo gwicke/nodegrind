@@ -91,6 +91,8 @@ if (module.parent === null && process.argv.length > 1) {
 		c2ct.chromeProfileToCallgrind(
 				prof2cpuprofile(profiler.stopProfiling('global')),
 				outStream);
+	var out = JSON.stringify(argv.o);
+	console.log('Profile written to', out + '\nTry `kcachegrind', out + '`');
 }
 
 

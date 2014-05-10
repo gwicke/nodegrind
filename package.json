@@ -21,6 +21,6 @@
   },
   "dependencies": {
     "v8-profiler": "^4.0.1",
-    "chrome2calltree": "0.0.1"
+    "chrome2calltree": "git+https://github.com/gwicke/chrome2calltree.git"
   }
 }
