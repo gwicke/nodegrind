@@ -2,7 +2,8 @@
 "use strict";
 var profiler = require('v8-profiler'),
 	c2ct = require('chrome2calltree'),
-	fs = require('fs');
+	fs = require('fs'),
+	memstream = require('memory-streams');
 
 /**
  * Simplistic V8 CPU profiler wrapper, WIP
@@ -98,11 +99,18 @@ if (module.parent === null && process.argv.length > 1) {
 
 module.exports = {
 	// Start profiling
-	start: function(name) {
+	startCPU: function(name) {
 		return profiler.startProfiling(name);
 	},
 	// End profiling
-	stop: function(name) {
-		return prof2cpuprofile(profiler.stopProfiling(name));
+	stopCPU: function(name, format) {
+		var cpuprofile = prof2cpuprofile(profiler.stopProfiling(name));
+		if (format === 'cpuprofile') {
+			return cpuprofile;
+		} else {
+			var outStream = memstream.WritableStream();
+			c2ct.chromeProfileToCallgrind(cpuprofile, outStream);
+			return outStream.toString();
+		}
 	}
 };
