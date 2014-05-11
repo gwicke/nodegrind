@@ -79,7 +79,7 @@ if (module.parent === null && process.argv.length > 1) {
 	var argv = require('yargs')
 		.usage('Usage: $0 [--heap] [-o outfile] <example.js> <args>')
 		.default('heap', false)
-		.default('o', 'nodegrind.callgrind')
+		.default('o', 'callgrind.out.' + process.pid)
 		.check(function(argv) {
 			return argv._.length > 0;
 		})
@@ -106,7 +106,7 @@ module.exports = {
 	stopCPU: function(name, format) {
 		var cpuprofile = prof2cpuprofile(profiler.stopProfiling(name));
 		if (format === 'cpuprofile') {
-			return cpuprofile;
+			return JSON.stringify(cpuprofile);
 		} else {
 			var outStream = memstream.WritableStream();
 			c2ct.chromeProfileToCallgrind(cpuprofile, outStream);
