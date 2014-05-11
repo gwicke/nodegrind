@@ -1,7 +1,7 @@
 nodegrind
 =========
 
-Profile nodejs applications with kcachegrind, either using the nodegrind wrapper or the more targeted profiling module.
+Profile nodejs applications with [kcachegrind](http://kcachegrind.sourceforge.net/html/Home.html), either using the nodegrind wrapper or the more targeted profiling module.
 
 Usage:
 ------
