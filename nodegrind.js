@@ -90,12 +90,7 @@ if (module.parent === null && process.argv.length > 1) {
 	profiler.startProfiling('global');
 	// FIXME: requiring the main app won't work if the app relies on
 	// module.parent being null.
-	if (!/^\//.test(main)) {
-		require(process.cwd() + '/' + main);
-	} else {
-		// absolute path
-		require(main);
-	}
+	require(path.resolve(main));
 	var outStream = fs.createWriteStream(argv.o);
 		c2ct.chromeProfileToCallgrind(
 				prof2cpuprofile(profiler.stopProfiling('global')),
