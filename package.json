@@ -1,6 +1,6 @@
 {
   "name": "nodegrind",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Profile nodejs applications with kcachegrind, either using the nodegrind wrapper or the more targeted profiling module.",
   "main": "nodegrind.js",
   "scripts": {
