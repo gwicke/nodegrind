@@ -3,6 +3,7 @@
 var profiler = require('v8-profiler'),
 	c2ct = require('chrome2calltree'),
 	fs = require('fs'),
+	path = require('path'),
 	memstream = require('memory-streams');
 
 /**
@@ -87,7 +88,14 @@ if (module.parent === null && process.argv.length > 1) {
 	var main = argv._.shift();
 	process.argv.shift();
 	profiler.startProfiling('global');
-	require('./' + main);
+	// FIXME: requiring the main app won't work if the app relies on
+	// module.parent being null.
+	if (!/^\//.test(main)) {
+		require(process.cwd() + '/' + main);
+	} else {
+		// absolute path
+		require(main);
+	}
 	var outStream = fs.createWriteStream(argv.o);
 		c2ct.chromeProfileToCallgrind(
 				prof2cpuprofile(profiler.stopProfiling('global')),
