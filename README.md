@@ -3,6 +3,12 @@ nodegrind
 
 Profile nodejs applications with [kcachegrind](http://kcachegrind.sourceforge.net/html/Home.html), either using the nodegrind wrapper or the more targeted profiling module.
 
+Installation
+------------
+```bash
+npm install -g nodegrind
+```
+
 Full-program profiling:
 -----------------------
 ```bash
