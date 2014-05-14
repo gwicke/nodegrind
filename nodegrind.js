@@ -111,7 +111,7 @@ module.exports = {
 		if (format === 'cpuprofile') {
 			return JSON.stringify(cpuprofile);
 		} else {
-			var outStream = memstream.WritableStream();
+			var outStream = new memstream.WritableStream();
 			c2ct.chromeProfileToCallgrind(cpuprofile, outStream);
 			return outStream.toString();
 		}
