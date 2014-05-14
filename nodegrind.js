@@ -1,4 +1,4 @@
-#!/usr/bin/node
+#!/usr/bin/env node
 "use strict";
 var profiler = require('v8-profiler'),
 	c2ct = require('chrome2calltree'),
