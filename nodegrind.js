@@ -91,12 +91,15 @@ if (module.parent === null && process.argv.length > 1) {
 	// FIXME: requiring the main app won't work if the app relies on
 	// module.parent being null.
 	require(path.resolve(main));
-	var outStream = fs.createWriteStream(argv.o);
-		c2ct.chromeProfileToCallgrind(
-				prof2cpuprofile(profiler.stopProfiling('global')),
-				outStream);
-	var out = JSON.stringify(argv.o);
-	console.log('Profile written to', out + '\nTry `kcachegrind', out + '`');
+	// Stop profiling in an exit handler so that we properly handle async code
+	process.on('exit', function() {
+		var outStream = fs.createWriteStream(argv.o);
+			c2ct.chromeProfileToCallgrind(
+					prof2cpuprofile(profiler.stopProfiling('global')),
+					outStream);
+		var out = JSON.stringify(argv.o);
+		console.log('Profile written to', out + '\nTry `kcachegrind', out + '`');
+	});
 }
 
 
