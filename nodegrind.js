@@ -93,10 +93,11 @@ if (module.parent === null && process.argv.length > 1) {
 	require(path.resolve(main));
 	// Stop profiling in an exit handler so that we properly handle async code
 	process.on('exit', function() {
-		var outStream = fs.createWriteStream(argv.o);
+		var outStream = new memstream.WritableStream();
 			c2ct.chromeProfileToCallgrind(
 					prof2cpuprofile(profiler.stopProfiling('global')),
 					outStream);
+		fs.writeFileSync(argv.o, outStream.toString());
 		var out = JSON.stringify(argv.o);
 		console.log('Profile written to', out + '\nTry `kcachegrind', out + '`');
 	});
