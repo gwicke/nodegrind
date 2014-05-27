@@ -99,7 +99,7 @@ if (module.parent === null && process.argv.length > 1) {
 					outStream);
 		fs.writeFileSync(argv.o, outStream.toString());
 		var out = JSON.stringify(argv.o);
-		console.log('Profile written to', out + '\nTry `kcachegrind', out + '`');
+		console.warn('Profile written to', out + '\nTry `kcachegrind', out + '`');
 	});
 }
 
