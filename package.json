@@ -1,6 +1,6 @@
 {
   "name": "nodegrind",
-  "version": "0.1.8",
+  "version": "0.2.0",
   "description": "Profile nodejs applications with kcachegrind, either using the nodegrind wrapper or the more targeted profiling module.",
   "main": "nodegrind.js",
   "scripts": {
@@ -23,7 +23,7 @@
     "url": "https://github.com/gwicke/nodegrind/issues"
   },
   "dependencies": {
-    "v8-profiler": "^4.0.1",
+    "v8-profiler": "~5.0.0",
     "chrome2calltree": "git+https://github.com/gwicke/chrome2calltree.git",
     "memory-streams": "0.0.3",
     "yargs": "^1.2.1"
