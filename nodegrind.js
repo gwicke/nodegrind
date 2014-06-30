@@ -68,11 +68,16 @@ function convertProfNode (node) {
 }
 
 function prof2cpuprofile (prof) {
-	return {
-		head: convertProfNode(prof.topRoot),
-		startTime: 0,
-		endTime: prof.topRoot.totalTime,
-	};
+    if (process.version > 'v0.11.') {
+        // Nothing to be done
+        return prof;
+    } else {
+        return {
+            head: convertProfNode(prof.topRoot),
+                startTime: 0,
+                endTime: prof.topRoot.totalTime,
+        };
+    }
 }
 
 if (module.parent === null && process.argv.length > 1) {
