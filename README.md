@@ -6,11 +6,11 @@ Profile nodejs applications with [kcachegrind](http://kcachegrind.sourceforge.ne
 Installation
 ------------
 
-## Node 0.10
+### Node 0.10
 ```bash
 npm install -g nodegrind@0.1.8
 ```
-## Node 0.11
+### Node 0.11
 ```bash
 npm install -g nodegrind
 ```
