@@ -80,7 +80,7 @@ function prof2cpuprofile (prof) {
     }
 }
 
-if (module.parent === null && process.argv.length > 1) {
+function main() {
 	// run as utility
 	var argv = require('yargs')
 		.usage('Usage: $0 [--heap] [-o outfile] <example.js> <args>')
@@ -90,14 +90,12 @@ if (module.parent === null && process.argv.length > 1) {
 			return argv._.length > 0;
 		})
 		.argv;
-	var main = argv._.shift();
+	var mainModule = argv._.shift();
 	process.argv.shift();
 	profiler.startProfiling('global');
-	// FIXME: requiring the main app won't work if the app relies on
-	// module.parent being null.
-	require(path.resolve(main));
+
 	// Stop profiling in an exit handler so that we properly handle async code
-	process.on('exit', function() {
+    function writeProfile() {
 		var outStream = new memstream.WritableStream();
 			c2ct.chromeProfileToCallgrind(
 					prof2cpuprofile(profiler.stopProfiling('global')),
@@ -105,9 +103,27 @@ if (module.parent === null && process.argv.length > 1) {
 		fs.writeFileSync(argv.o, outStream.toString());
 		var out = JSON.stringify(argv.o);
 		console.warn('Profile written to', out + '\nTry `kcachegrind', out + '`');
-	});
+        process.removeAllListeners('exit');
+        process.exit(0);
+	}
+
+    // Set up callbacks
+	process.on('exit', writeProfile);
+	process.on('SIGTERM', writeProfile);
+	process.on('SIGINT', writeProfile);
+
+	// FIXME: requiring the main app won't work if the app relies on
+	// module.parent being null.
+	var mainFunc = require(path.resolve(mainModule));
+    // But, if it exposes a main method, then try calling it.
+    if (typeof mainFunc === 'function') {
+        mainFunc();
+    }
 }
 
+if (module.parent === null && process.argv.length > 1) {
+    main();
+}
 
 module.exports = {
 	// Start profiling
