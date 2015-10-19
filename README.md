@@ -8,11 +8,11 @@ Installation
 
 ### Node 0.10
 ```bash
-npm install nodegrind
+npm install nodegrind@0.5.0
 ```
-### Node 0.11
+### Node 4.2
 ```bash
-npm install -g nodegrind@0.4.0
+npm install nodegrind
 ```
 
 Full-program profiling:
