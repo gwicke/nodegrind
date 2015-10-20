@@ -80,6 +80,23 @@ function prof2cpuprofile (prof) {
     }
 }
 
+// Start profiling
+function startCPU(name) {
+    return profiler.startProfiling(name);
+}
+
+// End profiling
+function stopCPU(name, format) {
+    var cpuprofile = prof2cpuprofile(profiler.stopProfiling(name));
+    if (format === 'cpuprofile') {
+        return JSON.stringify(cpuprofile);
+    } else {
+        var outStream = new memstream.WritableStream();
+        c2ct.chromeProfileToCallgrind(cpuprofile, outStream);
+        return outStream.toString();
+    }
+}
+
 function main() {
 	// run as utility
 	var argv = require('yargs')
@@ -92,17 +109,19 @@ function main() {
 		.argv;
 	var mainModule = argv._.shift();
 	process.argv.shift();
-	profiler.startProfiling('global');
+    startCPU('global');
 
 	// Stop profiling in an exit handler so that we properly handle async code
     function writeProfile() {
-		var outStream = new memstream.WritableStream();
-			c2ct.chromeProfileToCallgrind(
-					prof2cpuprofile(profiler.stopProfiling('global')),
-					outStream);
-		fs.writeFileSync(argv.o, outStream.toString());
-		var out = JSON.stringify(argv.o);
-		console.warn('Profile written to', out + '\nTry `kcachegrind', out + '`');
+        var format;
+        if (/\.cpuprofile$/.test(argv.o)) {
+            format = 'cpuprofile';
+        }
+
+        var prof = stopCPU('global', format);
+		fs.writeFileSync(argv.o, prof);
+		var fname = JSON.stringify(argv.o);
+		console.warn('Profile written to', fname + '\nTry `kcachegrind', fname + '`');
         process.removeAllListeners('exit');
         process.exit(0);
 	}
@@ -126,19 +145,4 @@ if (module.parent === null && process.argv.length > 1) {
 }
 
 module.exports = {
-	// Start profiling
-	startCPU: function(name) {
-		return profiler.startProfiling(name);
-	},
-	// End profiling
-	stopCPU: function(name, format) {
-		var cpuprofile = prof2cpuprofile(profiler.stopProfiling(name));
-		if (format === 'cpuprofile') {
-			return JSON.stringify(cpuprofile);
-		} else {
-			var outStream = new memstream.WritableStream();
-			c2ct.chromeProfileToCallgrind(cpuprofile, outStream);
-			return outStream.toString();
-		}
-	}
 };
