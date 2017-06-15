@@ -145,4 +145,6 @@ if (module.parent === null && process.argv.length > 1) {
 }
 
 module.exports = {
+  startCPU: startCPU,
+  stopCPU: stopCPU
 };
